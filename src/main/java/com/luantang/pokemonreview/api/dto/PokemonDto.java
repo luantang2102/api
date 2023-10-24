@@ -1,24 +1,12 @@
-package com.luantang.pokemonreview.api.models;
+package com.luantang.pokemonreview.api.dto;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document
-public class Pokemon {
-
-    @Transient
-    public static final String SEQUENCE_NAME = "pokemon_sequence";
-
-    @Id
+public class PokemonDto {
     private int id;
     private String name;
     private String type;
 
-    public Pokemon() {
-    }
-
-    public Pokemon(String name, String type) {
+    public PokemonDto(int id, String name, String type) {
+        this.id = id;
         this.name = name;
         this.type = type;
     }
@@ -46,6 +34,4 @@ public class Pokemon {
     public void setType(String type) {
         this.type = type;
     }
-
-
 }
