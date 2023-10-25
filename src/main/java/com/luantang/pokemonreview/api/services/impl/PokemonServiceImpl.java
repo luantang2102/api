@@ -7,6 +7,9 @@ import com.luantang.pokemonreview.api.services.PokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class PokemonServiceImpl implements PokemonService {
     private PokemonRepository pokemonRepository;
@@ -14,6 +17,20 @@ public class PokemonServiceImpl implements PokemonService {
     @Autowired
     public PokemonServiceImpl(PokemonRepository pokemonRepository) {
         this.pokemonRepository = pokemonRepository;
+    }
+
+    @Override
+    public List<PokemonDto> getAllPokemons() {
+        List<Pokemon> pokemon = pokemonRepository.findAll();
+        return pokemon.stream().map(pok -> mapToDto(pok)).collect(Collectors.toList());
+    }
+
+    private PokemonDto mapToDto(Pokemon pokemon) {
+        return new PokemonDto(pokemon.getId(), pokemon.getName(), pokemon.getType());
+    }
+
+    private Pokemon mapToEntity(PokemonDto pokemonDto) {
+        return new Pokemon(pokemonDto.getId(), pokemonDto.getName(), pokemonDto.getType());
     }
 
     @Override
