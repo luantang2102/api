@@ -1,6 +1,7 @@
 package com.luantang.pokemonreview.api.services.impl;
 
 import com.luantang.pokemonreview.api.dto.PokemonDto;
+import com.luantang.pokemonreview.api.exceptions.PokemonNotFoundException;
 import com.luantang.pokemonreview.api.models.Pokemon;
 import com.luantang.pokemonreview.api.repositories.PokemonRepository;
 import com.luantang.pokemonreview.api.services.PokemonService;
@@ -25,6 +26,29 @@ public class PokemonServiceImpl implements PokemonService {
         return pokemon.stream().map(pok -> mapToDto(pok)).collect(Collectors.toList());
     }
 
+    @Override
+    public PokemonDto getPokemonById(int id) {
+        Pokemon pokemon = pokemonRepository.findById(id).orElseThrow(() -> new PokemonNotFoundException("Pokemon could not be found"));
+        return mapToDto(pokemon);
+    }
+
+    @Override
+    public PokemonDto updatePokemon(PokemonDto pokemonDto, int id) {
+        Pokemon pokemon = pokemonRepository.findById(id).orElseThrow(() -> new PokemonNotFoundException("Pokemon could not be updated"));
+
+        pokemon.setName(pokemonDto.getName());
+        pokemon.setType(pokemonDto.getType());
+
+        Pokemon updatePokemon = pokemonRepository.save(pokemon);
+        return mapToDto(pokemon);
+    }
+
+    @Override
+    public void deletePokemon(int id) {
+        Pokemon pokemon = pokemonRepository.findById(id).orElseThrow(() -> new PokemonNotFoundException("Pokemon could not be deleted"));
+        pokemonRepository.delete(pokemon);
+    }
+
     private PokemonDto mapToDto(Pokemon pokemon) {
         return new PokemonDto(pokemon.getId(), pokemon.getName(), pokemon.getType());
     }
@@ -47,4 +71,6 @@ public class PokemonServiceImpl implements PokemonService {
         PokemonDto pokemonResponse = new PokemonDto(newPokemon.getId(), newPokemon.getName(), newPokemon.getType());
         return pokemonResponse;
     }
+
+
 }
