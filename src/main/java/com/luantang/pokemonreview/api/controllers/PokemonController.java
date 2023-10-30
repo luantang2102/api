@@ -1,36 +1,35 @@
 package com.luantang.pokemonreview.api.controllers;
 
 import com.luantang.pokemonreview.api.dto.PokemonDto;
+import com.luantang.pokemonreview.api.dto.PokemonResponse;
 import com.luantang.pokemonreview.api.models.Pokemon;
 import com.luantang.pokemonreview.api.services.PokemonService;
 import com.luantang.pokemonreview.api.services.SequenceGeneratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/")
 public class PokemonController {
 
-
     private PokemonService pokemonService;
 
-    private SequenceGeneratorService sequenceGenaratorService;
+    private SequenceGeneratorService sequenceGeneratorService;
 
     @Autowired
-    public PokemonController(PokemonService pokemonService, SequenceGeneratorService sequenceGenaratorService) {
+    public PokemonController(PokemonService pokemonService, SequenceGeneratorService sequenceGeneratorService) {
         this.pokemonService = pokemonService;
-        this.sequenceGenaratorService = sequenceGenaratorService;
+        this.sequenceGeneratorService = sequenceGeneratorService;
     }
 
     @GetMapping("pokemons")
-    public ResponseEntity<List<PokemonDto>> getPokemons() {
-        return new ResponseEntity<>(pokemonService.getAllPokemons(), HttpStatus.OK);
+    public ResponseEntity<PokemonResponse> getPokemons(
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+        return new ResponseEntity<>(pokemonService.getAllPokemons(pageNo, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("pokemon/{id}")
@@ -41,7 +40,7 @@ public class PokemonController {
     @PostMapping("pokemon/create")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<PokemonDto> createPokemon(@RequestBody PokemonDto pokemonDto) {
-        pokemonDto.setId(sequenceGenaratorService.getSequenceNumber(Pokemon.SEQUENCE_NAME));
+        pokemonDto.setId(sequenceGeneratorService.getSequenceNumber(Pokemon.SEQUENCE_NAME));
         return new ResponseEntity<>(pokemonService.createPokemon(pokemonDto), HttpStatus.CREATED);
     }
 
