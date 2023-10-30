@@ -1,21 +1,46 @@
 package com.luantang.pokemonreview.api.models;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
+
+@Document("Review")
 public class Review {
+
+    @Transient
+    public static final String SEQUENCE_NAME = "review_sequence";
+
     @Id
     private int id;
     private String title;
     private String content;
-    private int start;
+    private int stars;
 
-    public Review(int id, String title, String content, int start) {
+    private Pokemon pokemon;
+
+    public Review() {
+    }
+
+    public Review(String title, String content, int stars) {
+        this.title = title;
+        this.content = content;
+        this.stars = stars;
+    }
+
+    public Review(int id, String title, String content, int stars) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.start = start;
+        this.stars = stars;
+    }
+
+    public Review(int id, String title, String content, int stars, Pokemon pokemon) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.stars = stars;
+        this.pokemon = pokemon;
     }
 
     public int getId() {
@@ -42,11 +67,19 @@ public class Review {
         this.content = content;
     }
 
-    public int getStart() {
-        return start;
+    public int getStars() {
+        return stars;
     }
 
-    public void setStart(int start) {
-        this.start = start;
+    public void setStars(int stars) {
+        this.stars = stars;
+    }
+
+    public Pokemon getPokemon() {
+        return pokemon;
+    }
+
+    public void setPokemon(Pokemon pokemon) {
+        this.pokemon = pokemon;
     }
 }

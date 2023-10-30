@@ -4,7 +4,10 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
+import java.util.ArrayList;
+import java.util.List;
+
+@Document("Pokemon")
 public class Pokemon {
 
     @Transient
@@ -14,6 +17,8 @@ public class Pokemon {
     private int id;
     private String name;
     private String type;
+
+    private List<Review> reviewList = new ArrayList<>();
 
     public Pokemon() {
     }
@@ -53,5 +58,11 @@ public class Pokemon {
         this.type = type;
     }
 
+    public List<Review> getReviewList() {
+        return reviewList;
+    }
 
+    public void setReviewList(List<Review> reviewList) {
+        this.reviewList = reviewList;
+    }
 }

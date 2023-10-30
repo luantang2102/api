@@ -1,11 +1,10 @@
 package com.luantang.pokemonreview.api.services;
 
 import com.luantang.pokemonreview.api.dto.PokemonDto;
-
-import java.util.List;
+import com.luantang.pokemonreview.api.dto.PokemonResponse;
 
 public interface PokemonService {
-    List<PokemonDto> getAllPokemons();
+    PokemonResponse getAllPokemons(int pageNo, int pageSize);
     PokemonDto createPokemon(PokemonDto pokemonDto);
     PokemonDto getPokemonById(int id);
     PokemonDto updatePokemon(PokemonDto pokemonDto, int id);
