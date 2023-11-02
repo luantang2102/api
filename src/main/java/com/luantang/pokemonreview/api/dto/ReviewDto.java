@@ -1,4 +1,4 @@
-package com.luantang.pokemonreview.api.dto;
+    package com.luantang.pokemonreview.api.dto;
 
 public class ReviewDto {
     private int id;
